@@ -15251,9 +15251,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this4.$forceUpdate();
       });
     },
-    editTask: function editTask(id) {
+    editModal: function editModal(id) {
       this.editId = id;
       this.showModal = true;
+    },
+    editNameTask: function editNameTask(task) {
+      var _this5 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0__services_http__["a" /* default */].put('tasks/' + task.id, { name: task.name }, function (res) {
+        _this5.tasks[task.id] = res.data;
+        _this5.$forceUpdate();
+      });
+      this.showModal = false;
     }
   }
 });
@@ -16165,7 +16174,7 @@ var render = function() {
         { attrs: { type: "text/x-template", id: "modal-template" } },
         [
           _vm._v(
-            '\n  <transition name="modal">\n  <div class="modal-mask">\n      <div class="modal-wrapper">\n          <div class="modal-container">\n              <div class="modal-header">\n                  <slot name="header">\n                  default header\n                  </slot>\n              </div>\n              <div class="modal-body">\n                  <slot name="body">\n                  default body\n                  </slot>\n              </div>\n              <div class="modal-footer">\n                  <slot name="footer">\n                  <button class="btn btn-primary" @click="$emit(\'close\')">\n                      OK\n                  </button>\n                  </slot>\n              </div>\n          </div>\n      </div>\n  </div>\n  </transition>\n  '
+            '\n  <transition name="modal">\n  <div class="modal-mask">\n      <div class="modal-wrapper">\n          <div class="modal-container">\n              <div class="modal-header">\n                  <slot name="header">\n                  default header\n                  </slot>\n              </div>\n              <div class="modal-body">\n                  <slot name="body">\n                  default body\n                  </slot>\n              </div>\n              <div class="modal-footer">\n                  <slot name="footer">\n                  </slot>\n              </div>\n          </div>\n      </div>\n  </div>\n  </transition>\n  '
           )
         ]
       ),
@@ -16216,7 +16225,22 @@ var render = function() {
                     }
                   }
                 })
-              ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { slot: "footer" },
+                  on: {
+                    click: function($event) {
+                      _vm.editNameTask(_vm.tasks[_vm.editId])
+                    }
+                  },
+                  slot: "footer"
+                },
+                [_vm._v("\n          OK\n        ")]
+              )
             ]
           )
         : _vm._e(),
@@ -16242,7 +16266,7 @@ var render = function() {
                       {
                         on: {
                           dblclick: function($event) {
-                            _vm.editTask(task.id)
+                            _vm.editModal(task.id)
                           }
                         }
                       },
