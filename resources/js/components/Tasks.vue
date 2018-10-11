@@ -20,9 +20,6 @@
                 </div>
                 <div class="modal-footer">
                     <slot name="footer">
-                    <button class="btn btn-primary" @click="$emit('close')">
-                        OK
-                    </button>
                     </slot>
                 </div>
             </div>
@@ -39,6 +36,9 @@
             {{ tasks[editId].name}}
             <input type="text" v-model="tasks[editId].name" class="col-md-8 offset-md-2 mt-5 form-control">
           </h4>
+          <button slot="footer" class="btn btn-primary" @click="editNameTask(tasks[editId])">
+            OK
+          </button>
         </modal>
     <!-- edit modal -->
 
@@ -128,6 +128,13 @@
         this.editId = id;
         this.showModal = true;
       },
+      editNameTask (task){
+        http.put('tasks/' + task.id, {name: task.name}, res => {
+            this.tasks[task.id] = res.data
+            this.$forceUpdate()
+        })
+        this.showModal = false;
+      }
     }
   }
 
