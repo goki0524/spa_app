@@ -9,7 +9,7 @@ class TaskController extends Controller
 {
     public function index()
     {
-        return Task::take(5)->get()->keyBy('id');
+        return Task::take(50)->get()->keyBy('id');
     }
 
     public function store(Request $request)
