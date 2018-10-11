@@ -12127,6 +12127,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+// modal component
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('modal', {
+  template: '#modal-template'
+});
+
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   router: __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */],
   el: '#app',
@@ -15148,6 +15153,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15160,7 +15205,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       tasks: [],
       name: '',
       showAlert: false,
-      alertMessage: ''
+      showModal: false,
+      alertMessage: '',
+      editId: 0
     };
   },
 
@@ -15203,6 +15250,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         delete _this4.tasks[task.id];
         _this4.$forceUpdate();
       });
+    },
+    editTask: function editTask(id) {
+      this.editId = id;
+      this.showModal = true;
     }
   }
 });
@@ -16110,6 +16161,67 @@ var render = function() {
       _c("router-link", { attrs: { to: "/login" } }, [_vm._v("Login.")]),
       _vm._v(" "),
       _c(
+        "script",
+        { attrs: { type: "text/x-template", id: "modal-template" } },
+        [
+          _vm._v(
+            '\n  <transition name="modal">\n  <div class="modal-mask">\n      <div class="modal-wrapper">\n          <div class="modal-container">\n              <div class="modal-header">\n                  <slot name="header">\n                  default header\n                  </slot>\n              </div>\n              <div class="modal-body">\n                  <slot name="body">\n                  default body\n                  </slot>\n              </div>\n              <div class="modal-footer">\n                  <slot name="footer">\n                  <button class="btn btn-primary" @click="$emit(\'close\')">\n                      OK\n                  </button>\n                  </slot>\n              </div>\n          </div>\n      </div>\n  </div>\n  </transition>\n  '
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.showModal
+        ? _c(
+            "modal",
+            {
+              on: {
+                close: function($event) {
+                  _vm.showModal = false
+                }
+              }
+            },
+            [
+              _c("h3", { attrs: { slot: "header" }, slot: "header" }, [
+                _vm._v("編集")
+              ]),
+              _vm._v(" "),
+              _c("h4", { attrs: { slot: "body" }, slot: "body" }, [
+                _vm._v(
+                  "\n          " +
+                    _vm._s(_vm.tasks[_vm.editId].name) +
+                    "\n          "
+                ),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.tasks[_vm.editId].name,
+                      expression: "tasks[editId].name"
+                    }
+                  ],
+                  staticClass: "col-md-8 offset-md-2 mt-5 form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.tasks[_vm.editId].name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.tasks[_vm.editId],
+                        "name",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
         "div",
         [
           _c("strong", [_vm._v("Hello, TODO App!")]),
@@ -16117,7 +16229,7 @@ var render = function() {
           _c("p", [_vm._v("Your tasks here.")]),
           _vm._v(" "),
           _vm._l(_vm.tasks, function(task) {
-            return _c("ul", [
+            return _c("ul", { key: task.id }, [
               task.is_done
                 ? _c(
                     "li",
@@ -16125,7 +16237,17 @@ var render = function() {
                     1
                   )
                 : _c("li", [
-                    _vm._v("\n        " + _vm._s(task.name) + "\n      ")
+                    _c(
+                      "span",
+                      {
+                        on: {
+                          dblclick: function($event) {
+                            _vm.editTask(task.id)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(task.name))]
+                    )
                   ]),
               _vm._v(" "),
               task.is_done
