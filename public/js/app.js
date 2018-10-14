@@ -16213,6 +16213,15 @@ var render = function() {
                   attrs: { type: "text" },
                   domProps: { value: _vm.tasks[_vm.editId].name },
                   on: {
+                    keyup: function($event) {
+                      if (
+                        !("button" in $event) &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      _vm.editNameTask(_vm.tasks[_vm.editId])
+                    },
                     input: function($event) {
                       if ($event.target.composing) {
                         return

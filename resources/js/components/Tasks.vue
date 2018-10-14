@@ -34,7 +34,7 @@
           <h3 slot="header">編集</h3>
           <h4 slot="body">
             {{ tasks[editId].name}}
-            <input type="text" v-model="tasks[editId].name" class="col-md-8 offset-md-2 mt-5 form-control">
+            <input type="text" @keyup.enter="editNameTask(tasks[editId])" v-model="tasks[editId].name" class="col-md-8 offset-md-2 mt-5 form-control" >
           </h4>
           <button slot="footer" class="btn btn-primary" @click="editNameTask(tasks[editId])">
             OK
