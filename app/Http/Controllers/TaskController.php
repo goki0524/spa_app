@@ -9,13 +9,14 @@ class TaskController extends Controller
 {
     public function index()
     {
-        return Task::take(50)->get()->keyBy('id');
+        $user = \JWTAuth::parseToken()->authenticate();
+        return $user->tasks()->get()->keyBy('id');
     }
 
     public function store(Request $request)
     {
-       return Task::create($request->only('name'))->fresh();
-        
+        $user = \JWTAuth::parseToken()->authenticate();
+        return $user->tasks()->create($request->only('name'))->fresh();        
     }
 
     public function destroy($id)
